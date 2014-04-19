@@ -1,0 +1,12 @@
+$ORIGIN .
+$TTL 60 ; 1 minute
+%DOMAIN%   IN SOA  ns.antiblau.de. postmaster.antiblau.de. (
+                                3835684443 ; serial
+                                7200       ; refresh (2 hours)
+                                900        ; retry (15 minutes)
+                                604800     ; expire (1 week)
+                                7200       ; minimum (2 hours)
+                                )
+                        NS      ns.antiblau.de.
+$ORIGIN %DOMAIN%.
+*                       CNAME   %DOMAIN%.

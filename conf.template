@@ -1,0 +1,9 @@
+// $$ DOMAIN %DOMAIN% $$
+zone "%DOMAIN%" IN {
+        type master;
+        file "/etc/bind/dynamic/%DOMAIN%.zone";
+        update-policy {
+          grant ddns-key.%DOMAIN% zonesub ANY;
+        };
+};
+include "/etc/bind/dynamic/%DOMAIN%.key";
