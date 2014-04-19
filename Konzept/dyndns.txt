@@ -1,0 +1,59 @@
+Nach  http://feitel.indeedgeek.de/2012/8/dyndns_selbstgebacken/
+
+
+SQL-Tabelle:
+  Verknüpfung über participant ID
+  Auth data:
+    domain als User
+    Passwort wird extra vergeben (wegen Klartext-Speicherung/Übertragung)
+
+CREATE TABLE IF NOT EXISTS dyndns (
+  domain varchar(80) NOT NULL,
+  password varchar(32) NOT NULL,
+  ip varchar(15) NOT NULL,
+  lastupdate datetime NOT NULL,
+  participant int(11) NOT NULL,
+  PRIMARY KEY (domain),
+  KEY participant (participant)
+);
+
+
+Config pro Domain
+in	/etc/bind/dynamic
+named.conf.dynamic	Abschnitt für Domain-Zone
+$DOMAIN.zone		Zoneninfo
+$DOMAIN.key		Key
+$DOMAIN.zone.jnl	DDNS-DB (automatisch)
+
+$DOMAIN.* nach Template, auszutauschen ist nur der Domain-Name in SOA und CNAME
+
+
+
+Update-Parameter:
+  * Domain
+  * IP
+  daraus abgeleitet:
+  * Key
+  * Zone
+  
+
+DOMAIN=dyn.penguineering.com
+INA=77.64.174.67
+echo -e "
+server ns.antiblau.de
+zone $DOMAIN
+update delete $DOMAIN A
+update add $DOMAIN 60 A $INA
+show
+" | /usr/bin/nsupdate -k /etc/bind/dynamic/$DOMAIN.key
+
+
+
+
+DynDNS-API: http://dyn.com/support/developers/api/perform-update/
+
+Blog-Beiträge von ads:
+http://andreas.scherbaum.la/blog/archives/879-Run-your-own-Dynamic-DNS-server.html
+http://andreas.scherbaum.la/blog/archives/881-Web-service-for-Dynamic-DNS-service.html
+http://andreas.scherbaum.la/blog/archives/880-What-is-my-IP-address.html#extended
+
