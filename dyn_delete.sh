@@ -36,6 +36,11 @@ ZONEFILE=$ZONEDIR/$DOMAIN.zone
 # delete if exists
 if [ -f "$ZONEFILE" ]; then
   rm -f "$ZONEFILE"
+  local RES=$?
+  if [ "$?" != "0" ]; then
+    echo "[E zone nodelete] Error deleting zone file: $RES"
+    exit 1
+  fi
 else
   echo "[W no zone] Warn: Zone file for the domain does not exist!"
 fi
@@ -45,6 +50,11 @@ KEYFILE=$ZONEDIR/$DOMAIN.key
 # abort if the key already exists
 if [ -f "$KEYFILE" ]; then
   rm -f "$KEYFILE"
+  local RES=$?
+  if [ "$?" != "0" ]; then
+    echo "[E key nodelete] Error deleting key file: $RES"
+    exit 1
+  fi
 else
   echo "[W no key] Warn: Key file for the domain does not exist!"
 fi
