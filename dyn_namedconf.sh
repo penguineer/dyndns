@@ -27,12 +27,17 @@ source "$DIR/dyn_util.sh"
 
 # the template paths
 TEMPLATE_HEADER=$TEMPLATEDIR/conf.header.template
-TEMPLATE_ITEM=$TEMPLATEDIR/conf.zone.template
+TEMPLATE_ZONE=$TEMPLATEDIR/conf.zone.template
 TEMPLATE_FOOTER=$TEMPLATEDIR/conf.footer.template
+
 
 # Print the header
 template_instance $TEMPLATE_HEADER ""
-# TODO check return value
+if [ "$?" != "0" ]; then
+  echo "Fatal: Error on header template instantiation!"
+  exit 1
+fi
+
 
 # For each zone file (aka domain)
 # TODO sorting by file name may look nicer in the result, 
@@ -40,14 +45,21 @@ template_instance $TEMPLATE_HEADER ""
 for ZFILE in $ZONEDIR/*.zone; do
   # extract the domain name
   DOMAIN=$(echo "$ZFILE" | sed -e 's|^'$ZONEDIR/'||' -e 's/.zone$//')
-  # print the instantiated template 
-  cat conf.zone.template | sed -e "s/%DOMAIN%/$DOMAIN/" 
-# TODO check return value
+  # print the instantiated template
+  template_instance $TEMPLATE_ZONE $DOMAIN
+  if [ "$?" != "0" ]; then
+    echo "Fatal: Error on zone template instantiation!"
+    exit 1
+  fi
 done
+
 
 # Print the footer
 template_instance $TEMPLATE_FOOTER ""
-# TODO check return value
+if [ "$?" != "0" ]; then
+  echo "Fatal: Error on footer template instantiation!"
+  exit 1
+fi
 
 
 # Finished
