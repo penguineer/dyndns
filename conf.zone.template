@@ -7,3 +7,4 @@ zone "%DOMAIN%" IN {
         };
 };
 include "/etc/bind/dynamic/%DOMAIN%.key";
+

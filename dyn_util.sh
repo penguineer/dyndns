@@ -7,6 +7,7 @@
 
 # Domain syntax check
 # see http://stackoverflow.com/questions/15268987/bash-based-regex-domain-name-validation
+# Returns 0 if everything worked out, 1 if there is an error. The error message has been sent to stdout
 function check_domain() {
   local DOMAIN=$1
   
@@ -24,7 +25,7 @@ export -f check_domain
 
 
 # Check if the provided IP address is valid
-# Returns nothing if the address is okay, otherwise an error message.
+# Returns 0 if everything worked out, 1 if there is an error. The error message has been sent to stdout
 function check_ip() {
   local IP="$1"
   
@@ -48,6 +49,24 @@ function check_ip() {
 }
 export -f check_ip
 
+
+# Create and print a template instance
+# Parameter 1: The template path
+# Parameter 2: the actual domain to be replaced
+# Each occurence of %DOMAIN% in the template is replaced by the domain parameter
+# Returns the return value of the sed call
+function template_instance() {
+  local TEMPLATE=$1
+  local DOMAIN=$2
+
+  if [ ! -f "$TEMPLATE" ]; then
+    echo "Cannot find template $TEMPLATE!"
+    return 1
+  fi
+  
+  cat "$TEMPLATE" | sed -e "s/%DOMAIN%/$DOMAIN/" 
+  return $?
+}
 
 # End
 
