@@ -45,6 +45,18 @@ else
   echo "[W no zone] Warn: Zone file for the domain does not exist!"
 fi
 
+# Render the update file path
+JNLFILE=$ZONEDIR/$DOMAIN.jnl
+# delete if exists
+if [ -f "$JNLFILE" ]; then
+  rm -f "$JNLFILE"
+  local RES=$?
+  if [ "$?" != "0" ]; then
+    echo "[E jnl nodelete] Error deleting update file: $RES"
+    exit 1
+  fi
+fi
+
 # Render the key file path
 KEYFILE=$ZONEDIR/$DOMAIN.key
 # abort if the key already exists
