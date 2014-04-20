@@ -6,9 +6,10 @@
 #
 # Usage: dyn_create domain
 #
-#	domain	is the domain to be created (which must not be registered as a dyn domain
+#	domain	is the domain to be created (which must not already be 
+#		registered as a dyn domain)
 #
-# Requires: ddns-confgen
+# Requires: ddns-confgen (in package bind9)
 
 
 # Local config
@@ -33,9 +34,24 @@ if [ "$?" != "0" ]; then
 fi
 
 
-# Create the zone file
+# Render the zone file path
 ZONEFILE=$ZONEDIR/$DOMAIN.zone
-# TODO abort if already exists
+# abort if zone already exists
+if [ -f "$ZONEFILE" ]; then
+  echo "Zone file $ZONEFILE is in the way and will not be overwritten!"
+  exit 1
+fi
+
+# Render the key file path
+KEYFILE=$ZONEDIR/$DOMAIN.key
+# abort if the key already exists
+if [ -f "$KEYFILE" ]; then
+  echo "Key file $KEYFILE is in the way and will not be overwritten!"
+  exit 1
+fi
+
+
+# Create the zone
 echo "Creating zone in $ZONEFILE"
 cat zone.template | sed -e "s/%DOMAIN%/$DOMAIN/" > $ZONEFILE
 if [ "$?" != "0" ]; then
@@ -43,20 +59,19 @@ if [ "$?" != "0" ]; then
   exit 1
 fi
 
-KEYFILE=$ZONEDIR/$DOMAIN.key
-# TODO abort if already exists
-echo "Creating key in $KEYFILE"
 # Create the zone key
+echo "Creating key in $KEYFILE"
 $DDNS_CONFGEN -z $DOMAIN -q > $KEYFILE
-
-# Create the named config
-# TODO
-
-# Append to named.conf.dynamic
-# TODO
-
+if [ "$?" != "0" ]; then
+  echo "Error creating key file!"
+  exit 1
+fi
 
 # Finished
+echo "Dynamic zone for $DOMAIN created successfully."
+# named config in zone.conf.dynamic is created by a different script
+echo "Make sure that the named zone.conf.dynamic is updated, too!"
 
+exit 0
 
 # End
