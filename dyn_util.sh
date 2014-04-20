@@ -13,11 +13,11 @@ function check_domain() {
   
   # Check if domain parameter exists
   if [ -z "$DOMAIN" ]; then
-    echo "Domain parameter must be provided!"
+    echo "[E nodomain] Domain parameter must be provided!"
     return 1
   fi
   if ! echo "$DOMAIN" | grep -qP '(?=^.{5,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+\.(?:[a-z]{2,})$)'; then
-    echo "The domain name did not pass the syntax validation!"
+    echo "[E domain syntax error] The domain name did not pass the syntax validation!"
     return 1
   fi
 }
@@ -37,11 +37,11 @@ function check_ip() {
       VALID_IP_ADDRESS="$(echo $IP | awk -F'.' '$1 <=255 && $2 <= 255 && $3 <= 255 && $4 <= 255')"
       if [ -z "$VALID_IP_ADDRESS" ]
       then
-	 echo "The IP address wasn't valid; octets must be less than 256"
+	 echo "[E noip] The IP address wasn't valid; octets must be less than 256"
 	 return 1
       fi
   else
-      echo "The IP address was malformed"
+      echo "[E malformed ip] The IP address was malformed"
       return 1
   fi
   
@@ -60,7 +60,7 @@ function template_instance() {
   local DOMAIN=$2
 
   if [ ! -f "$TEMPLATE" ]; then
-    echo "Cannot find template $TEMPLATE!"
+    echo "[E no template] Cannot find template $TEMPLATE!"
     return 1
   fi
   

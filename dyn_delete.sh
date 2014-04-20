@@ -26,7 +26,7 @@ DOMAIN=$1
 # Check
 ERR=$(check_domain "$DOMAIN")
 if [ "$?" != "0" ]; then
-  echo "Domain parameter error: $ERR"
+  echo "$ERR"
   exit 1
 fi
 
@@ -37,7 +37,7 @@ ZONEFILE=$ZONEDIR/$DOMAIN.zone
 if [ -f "$ZONEFILE" ]; then
   rm -f "$ZONEFILE"
 else
-  echo "Warn: Zone file for the domain does not exist!"
+  echo "[W no zone] Warn: Zone file for the domain does not exist!"
 fi
 
 # Render the key file path
@@ -46,14 +46,14 @@ KEYFILE=$ZONEDIR/$DOMAIN.key
 if [ -f "$KEYFILE" ]; then
   rm -f "$KEYFILE"
 else
-  echo "Warn: Key file for the domain does not exist!"
+  echo "[W no key] Warn: Key file for the domain does not exist!"
 fi
 
 
 # Finished
-echo "Dynamic zone for $DOMAIN deleted."
+echo "[I] Dynamic zone for $DOMAIN deleted."
 # named config in zone.conf.dynamic is created by a different script
-echo "Make sure that the named zone.conf.dynamic is updated, too!"
+echo "[I] Make sure that the named zone.conf.dynamic is updated, too!"
 
 exit 0
 

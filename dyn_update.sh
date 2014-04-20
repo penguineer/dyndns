@@ -35,17 +35,17 @@ DOMAIN=$1
 # Check
 ERR=$(check_domain "$DOMAIN")
 if [ "$?" != "0" ]; then
-  echo "Domain parameter error: $ERR"
+  echo "$ERR"
   exit 1
 fi
 
 # Check if keyfile for the domain exists
 KEYFILE=$KEYDIR/$DOMAIN.key
 if [ ! -f "$KEYFILE" ]; then
-  echo "Cannot find key file $KEYFILE!"
+  echo "[E no key file] Cannot find key file $KEYFILE!"
   exit 1
 fi
-echo "Using key $KEYFILE."
+echo "[I] Using key $KEYFILE."
 
 
 # Get the IP
@@ -55,14 +55,14 @@ if [ -n "$IP" ]; then
 
   ERR=$(check_ip "$IP")
   if [ "$?" != "0" ]; then
-    echo "IP parameter error: $ERR"
+    echo "$ERR"
     exit 1
   fi
   
-  echo "Setting IP $IP for domain $DOMAIN."
+  echo "[I action set] Setting IP $IP for domain $DOMAIN."
 
 else
-  echo "Removing IP entry for domain $DOMAIN."
+  echo "[I action remove] Removing IP entry for domain $DOMAIN."
 fi
 
 
@@ -86,12 +86,12 @@ echo -e "$BATCH" | nsupdate -k $KEYFILE
 RET=$?
 
 if [ "$RET" != 0 ];  then
-  echo "Call to nsupdate failed with exit code $RET!"
+  echo "[E nsupdate] Call to nsupdate failed with exit code $RET!"
   exit 2
 fi
 
 # Finished
-echo "Update call finished successful."
+echo "[I] Update call finished successful."
 exit 0
 
 

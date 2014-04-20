@@ -29,7 +29,7 @@ DOMAIN=$1
 # Check
 ERR=$(check_domain "$DOMAIN")
 if [ "$?" != "0" ]; then
-  echo "Domain parameter error: $ERR"
+  echo "$ERR"
   exit 1
 fi
 
@@ -38,7 +38,7 @@ fi
 ZONEFILE=$ZONEDIR/$DOMAIN.zone
 # abort if zone already exists
 if [ -f "$ZONEFILE" ]; then
-  echo "Zone file $ZONEFILE is in the way and will not be overwritten!"
+  echo "[E zone exists] Zone file $ZONEFILE is in the way and will not be overwritten!"
   exit 1
 fi
 
@@ -46,31 +46,31 @@ fi
 KEYFILE=$ZONEDIR/$DOMAIN.key
 # abort if the key already exists
 if [ -f "$KEYFILE" ]; then
-  echo "Key file $KEYFILE is in the way and will not be overwritten!"
+  echo "[E key exists] Key file $KEYFILE is in the way and will not be overwritten!"
   exit 1
 fi
 
 
 # Create the zone
-echo "Creating zone in $ZONEFILE"
+echo "[I] Creating zone in $ZONEFILE"
 cat zone.template | sed -e "s/%DOMAIN%/$DOMAIN/" > $ZONEFILE
 if [ "$?" != "0" ]; then
-  echo "Error creating zone file!"
+  echo "[E zone nocreate] Error creating zone file!"
   exit 1
 fi
 
 # Create the zone key
-echo "Creating key in $KEYFILE"
+echo "[I] Creating key in $KEYFILE"
 $DDNS_CONFGEN -z $DOMAIN -q > $KEYFILE
 if [ "$?" != "0" ]; then
-  echo "Error creating key file!"
+  echo "[E key nocreate] Error creating key file!"
   exit 1
 fi
 
 # Finished
-echo "Dynamic zone for $DOMAIN created successfully."
+echo "[I] Dynamic zone for $DOMAIN created successfully."
 # named config in zone.conf.dynamic is created by a different script
-echo "Make sure that the named zone.conf.dynamic is updated, too!"
+echo "[I] Make sure that the named zone.conf.dynamic is updated, too!"
 
 exit 0
 

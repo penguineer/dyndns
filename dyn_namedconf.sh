@@ -31,30 +31,32 @@ TEMPLATE_FOOTER=$TEMPLATEDIR/conf.footer.template
 # Print the header
 template_instance $TEMPLATE_HEADER ""
 if [ "$?" != "0" ]; then
-  echo "Fatal: Error on header template instantiation!"
+  echo "[E header] Fatal: Error on header template instantiation!"
   exit 1
 fi
 
-
-# For each zone file (aka domain)
-# TODO sorting by file name may look nicer in the result, 
-#      however not human is expected to read it anyway …
-for ZFILE in $ZONEDIR/*.zone; do
-  # extract the domain name
-  DOMAIN=$(echo "$ZFILE" | sed -e 's|^'$ZONEDIR/'||' -e 's/.zone$//')
-  # print the instantiated template
-  template_instance $TEMPLATE_ZONE $DOMAIN
-  if [ "$?" != "0" ]; then
-    echo "Fatal: Error on zone template instantiation!"
-    exit 1
-  fi
-done
-
+# Check if there are zone files 
+# (otherwise the for loop returns unintended results)
+if [ -f $ZONEDIR/*.zone ]; then
+  # For each zone file (aka domain)
+  # TODO sorting by file name may look nicer in the result, 
+  #      however not human is expected to read it anyway …
+  for ZFILE in $ZONEDIR/*.zone; do
+    # extract the domain name
+    DOMAIN=$(echo "$ZFILE" | sed -e 's|^'$ZONEDIR/'||' -e 's/.zone$//')
+    # print the instantiated template
+    template_instance $TEMPLATE_ZONE $DOMAIN
+    if [ "$?" != "0" ]; then
+      echo "[E zone] Fatal: Error on zone template instantiation!"
+      exit 1
+    fi
+  done
+fi
 
 # Print the footer
 template_instance $TEMPLATE_FOOTER ""
 if [ "$?" != "0" ]; then
-  echo "Fatal: Error on footer template instantiation!"
+  echo "[E footer] Fatal: Error on footer template instantiation!"
   exit 1
 fi
 
