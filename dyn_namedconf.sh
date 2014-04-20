@@ -7,9 +7,6 @@
 # Usage: dyn_namedconf
 #
 # Outputs the text for named.conf.dynamic to be included in named.conf.local
-#
-#
-# Requires: sed
 
 
 # Local config

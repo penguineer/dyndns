@@ -11,7 +11,7 @@
 #	ip	is the new IP. If this parameter is omitted, the A record
 #		will be removed.
 #
-# Requires: grep, awk, nsupdate
+# Requires: nsupdate
 
 
 # Local config
