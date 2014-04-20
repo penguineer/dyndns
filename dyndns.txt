@@ -45,6 +45,7 @@ zone $DOMAIN
 update delete $DOMAIN A
 update add $DOMAIN 60 A $INA
 show
+send
 " | /usr/bin/nsupdate -k /etc/bind/dynamic/$DOMAIN.key
 
 
