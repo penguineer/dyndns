@@ -11,7 +11,7 @@
 
 # Local config
 ZONEDIR=/etc/bind/dynamic
-TEMPLATEDIR=/usr/share/dyndns
+TEMPLATEDIR=/usr/share/dyn
 
 
 # Includes (see http://stackoverflow.com/a/12694189)

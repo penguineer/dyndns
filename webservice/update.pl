@@ -18,9 +18,25 @@
 use strict;
 use DBI;
 use CGI;
+use File::Spec;
 
-my $config_file = "update_dyn.config";
-my $dyn_update = "/home/tux/dyn/dyn_update.sh";
+my $config_file = "/etc/dyn/update_dyn.config";
+my $dyn_update = "/usr/lib/dyn/dyn_update.sh";
+
+# see http://stackoverflow.com/a/15687293
+sub silently($) {
+    #Turn off STDOUT
+    open my $saveout, ">&STDOUT";
+    open STDOUT, '>', File::Spec->devnull();
+           
+    #Run passed function
+    my $func = $_[0];
+    $func->();
+                        
+    #Restore STDOUT
+    open STDOUT, ">&", $saveout;
+}
+
 
 ## Konfiguration laden
 my %config;
@@ -76,7 +92,7 @@ if (! $q_secret) {
 if (@missing) {
   print "err Missing parameter(s): ";
   print join(@missing, ', ');
-  print;
+  print "\n";
   exit 1;
 }
 
@@ -125,8 +141,12 @@ my @args;
 push(@args, $q_hostname);
 push(@args, $q_ip) if ($q_ip);
 
-# Send DynDNS update
-system($dyn_update, @args);
+# see http://stackoverflow.com/a/15687293
+sub dns_functor {
+  # Send DynDNS update
+  system("$dyn_update", @args);
+}
+silently(\&dns_functor);
 
 if ($? == -1) {
   print "911 Error calling the update script ($dyn_update): $!\n";
@@ -139,12 +159,16 @@ if ($? == -1) {
   print "dnserr error on calling nsupdate!\n";
 } else {
   # Everything is fine, send the result
-  print "good $q_ip\n";
+  print "good";
+  print " $q_ip" if ($q_ip);
+  print "\n";
   exit 0;
 }
 
 
 #something went wrong if we get here
 exit 1;
+
+
 
 ### Fertig :)
