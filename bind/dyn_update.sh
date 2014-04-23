@@ -17,8 +17,7 @@
 # Local config
 SERVER=ns.antiblau.de
 NSUPDATE=/usr/bin/nsupdate
-#KEYDIR=/etc/bind/dynamic # TODO change for production use
-KEYDIR=$(pwd)
+KEYDIR=/etc/bind/dynamic
 
 
 

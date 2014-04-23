@@ -10,10 +10,8 @@
 
 
 # Local config
-#ZONEDIR=/etc/bind/dynamic # TODO change for production use
-ZONEDIR=$(pwd)
-#TEMPLATEDIR=/usr/share/dyndns # TODO change for production use
-TEMPLATEDIR=$(pwd)
+ZONEDIR=/etc/bind/dynamic
+TEMPLATEDIR=/usr/share/dyndns
 
 
 # Includes (see http://stackoverflow.com/a/12694189)

@@ -10,8 +10,7 @@
 
 
 # Local config
-#ZONEDIR=/etc/bind/dynamic # TODO change for production use
-ZONEDIR=$(pwd)
+ZONEDIR=/etc/bind/dynamic
 
 
 # Includes (see http://stackoverflow.com/a/12694189)
