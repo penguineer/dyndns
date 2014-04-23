@@ -1,0 +1,7 @@
+# Configuration file for dyn updater
+
+# database access
+db_dsn: DBI:mysql:your-database-here:localhost
+db_user: your-user-here
+db_pass: your-password-here
+
