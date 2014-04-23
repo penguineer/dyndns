@@ -1,8 +1,18 @@
 Nach
   http://feitel.indeedgeek.de/2012/8/dyndns_selbstgebacken/
   http://linux.yyz.us/nsupdate/
+  http://andreas.scherbaum.la/blog/archives/881-Web-service-for-Dynamic-DNS-service.html
   
 DynDNS-API: http://dyn.com/support/developers/api/perform-update/
+  Config in OpenWRT (/usr/lib/ddns/services):
+  "dyndns.org"            "http://[USERNAME]:[PASSWORD]@members.dyndns.org/nic/update?hostname=[DOMAIN]&myip=[IP]"
+
+  => Entsprechende Aufruf-URL notwendig, keine HTTP-Auth
+
+  "good [ip]"	bei erfolgreichem Aufruf, ansonsten Fehlercode und Fehlermeldung
+  "nohost"	hostname does not exist
+  "dnserr"	DNS error encountered
+  "911"		There is a problem or scheduled maintenance on our side.
 
 
 
@@ -43,9 +53,6 @@ Update-Parameter:
   * Zone
   
 
-Blog-Beiträge von ads:
-http://andreas.scherbaum.la/blog/archives/879-Run-your-own-Dynamic-DNS-server.html
-http://andreas.scherbaum.la/blog/archives/881-Web-service-for-Dynamic-DNS-service.html
-http://andreas.scherbaum.la/blog/archives/880-What-is-my-IP-address.html#extended
+
 
 
