@@ -131,12 +131,12 @@ system($dyn_update, @args);
 if ($? == -1) {
   print "911 Error calling the update script ($dyn_update): $!\n";
 } elsif ($? & 127) {
-  printf "child died with signal %d, %s coredump\n",
+  printf "911 child died with signal %d, %s coredump\n",
     ($? & 127), ($? & 128) ? 'with' : 'without';
 } elsif ($? == 1) {
   print "911 internal error, invalid arguments to update script\n";
 } elsif ($? == 2) {
-  print "911 error on calling nsupdate!\n";
+  print "dnserr error on calling nsupdate!\n";
 } else {
   # Everything is fine, send the result
   print "good $q_ip\n";
