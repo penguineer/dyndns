@@ -91,7 +91,7 @@ if (! $q_secret) {
 
 if (@missing) {
   print "err Missing parameter(s): ";
-  print join(@missing, ', ');
+  print join(', ', @missing);
   print "\n";
   exit 1;
 }
