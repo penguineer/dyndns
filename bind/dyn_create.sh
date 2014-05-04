@@ -14,6 +14,7 @@
 
 # Local config
 ZONEDIR=/etc/bind/dynamic
+TEMPLATEDIR=/usr/share/dyn
 DDNS_CONFGEN=/usr/sbin/ddns-confgen
 
 # Includes (see http://stackoverflow.com/a/12694189)
@@ -52,7 +53,7 @@ fi
 
 # Create the zone
 echo "[I] Creating zone in $ZONEFILE"
-cat zone.template | sed -e "s/%DOMAIN%/$DOMAIN/" > $ZONEFILE
+cat $TEMPLATEDIR/zone.template | sed -e "s/%DOMAIN%/$DOMAIN/" > $ZONEFILE
 if [ "$?" != "0" ]; then
   echo "[E zone nocreate] Error creating zone file!"
   exit 1
