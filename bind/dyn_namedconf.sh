@@ -35,7 +35,8 @@ fi
 
 # Check if there are zone files 
 # (otherwise the for loop returns unintended results)
-if [ -f $ZONEDIR/*.zone ]; then
+stat -t -- $ZONEDIR/*.zone >/dev/null 2>&1
+if [ "$?" == "0" ]; then
   # For each zone file (aka domain)
   # TODO sorting by file name may look nicer in the result, 
   #      however not human is expected to read it anyway …
