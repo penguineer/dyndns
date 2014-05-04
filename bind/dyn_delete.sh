@@ -35,7 +35,7 @@ ZONEFILE=$ZONEDIR/$DOMAIN.zone
 # delete if exists
 if [ -f "$ZONEFILE" ]; then
   rm -f "$ZONEFILE"
-  local RES=$?
+  RES=$?
   if [ "$?" != "0" ]; then
     echo "[E zone nodelete] Error deleting zone file: $RES"
     exit 1
@@ -49,7 +49,7 @@ JNLFILE=$ZONEDIR/$DOMAIN.jnl
 # delete if exists
 if [ -f "$JNLFILE" ]; then
   rm -f "$JNLFILE"
-  local RES=$?
+  RES=$?
   if [ "$?" != "0" ]; then
     echo "[E jnl nodelete] Error deleting update file: $RES"
     exit 1
@@ -61,7 +61,7 @@ KEYFILE=$ZONEDIR/$DOMAIN.key
 # abort if the key already exists
 if [ -f "$KEYFILE" ]; then
   rm -f "$KEYFILE"
-  local RES=$?
+  RES=$?
   if [ "$?" != "0" ]; then
     echo "[E key nodelete] Error deleting key file: $RES"
     exit 1
